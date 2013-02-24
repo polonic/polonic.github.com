@@ -1,0 +1,277 @@
+---
+layout: post
+title: Untitled
+published: false
+---
+<h1>Tablă de șah folosind HTML, CSS și Javascript </h1>
+
+<h2>Ce vom face? </h2>
+
+<p>O tablă de șah care să semene cu cea de la <a href="http://chess.com/">Chess.com</a> . Întâi vom desena tabla, apoi piesele și la sfârșit le vom face să se miște. Rezultatul poate fi văzut <a href="http://dl.dropbox.com/u/6809835/tinychess%20-%20primary%20phase/index.html/">aici</a></p>
+
+<p><img src="http://dl.dropbox.com/u/6809835/tinychess%20-%20primary%20phase/board.png" alt="tabla sah" /></p>
+
+<h2>Să desenăm tabla</h2>
+
+<p>Întâi trebuie să creăm un fișier HTML, eu l-am numit &ldquo;index.html&rdquo; cu următorul conținut:</p>
+
+<h3>index.html</h3>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="error">&lt;</span>!doctype html<span class="error">&gt;</span>
+    <span class="tag">&lt;html&gt;</span>
+    <span class="tag">&lt;head&gt;</span>
+        <span class="tag">&lt;title&gt;</span>Tablă de șah<span class="tag">&lt;/title&gt;</span>
+        <span class="comment">&lt;!-- CSS rest --!&gt;
+        &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; ref=&quot;http://yui.yahooapis.com/2.8.2r1/build/reset/reset-min.css&quot;&gt;
+        &lt;!-- Stylesheet-ul nostru --!&gt;
+        &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;css/user.css&quot;/&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;</span></pre></div>
+</div>
+
+
+<p>Adăugam un &lt; div > cu <em>id</em>-ul <em>&ldquo;chess-board&rdquo;</em> care va conține tabla de sah. Apoi, în <em>&ldquo;chess-board&rdquo;</em>, adăugam înca 8 &lt; div >-uri care vor reprezenta liniile tablei de sah.</p>
+
+<h3>index.html</h3>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">chess-board</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">eighth-rank</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;/div&gt;</span>
+        ..
+        <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">first-rank</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;/div&gt;</span>    
+    <span class="tag">&lt;/div&gt;</span></pre></div>
+</div>
+
+
+<p>Minunat! Acuma urmează parte la chiar mi-aș fi dorit un limbaj de templating, trebuie să adăugăm 64 de &lt; div > -uri, 8 în fiecare &lt; div >, care vor reprezenta căsuțele. E util ca fiecare &lt; div > să aibă un <em>id</em>, vom folosi asta în viitor.</p>
+
+<h3>index.html</h3>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">eigth-rank</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">A8</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;/div&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">B8</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;/div&gt;</span>
+        ..
+        <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">H8</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+    ..
+    <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">first-rank</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">A1</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;/div&gt;</span>
+        ..    
+        <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">H8</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/div&gt;</span></pre></div>
+</div>
+
+
+<p>În browser nu vom vedea nimic încă, trebuie să adăugăm și ceva CSS. Fișierul &ldquo;user.css&rdquo; ar trebui creat într-un director numit &ldquo;css&rdquo;.</p>
+
+<h3>user.css</h3>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="constant">#chess-board</span> {
+        <span class="key">width</span>: <span class="float">640px</span>;
+        <span class="key">height</span>: <span class="float">640px</span>;
+        <span class="key">border</span>: <span class="float">5px</span> <span class="value">black</span> <span class="value">solid</span>;
+        <span class="key">margin</span>: <span class="float">20px</span> <span class="float">20px</span>;
+    }</pre></div>
+</div>
+
+
+<p>Acum a apărut un chenar, dar nu e tablă de șah. Pătrățelele vor avea dimensiunea de 80x80.</p>
+
+<h3>user.css</h3>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="constant">#chess-board</span> <span class="type">div</span> <span class="type">div</span> {
+        <span class="key">display</span>:<span class="value">block</span>;
+        <span class="key">width</span>: <span class="float">80px</span>;
+        <span class="key">height</span>: <span class="float">80px</span>;
+        <span class="key">background-color</span>: <span class="color">#B58763</span>;
+        <span class="key">float</span>: <span class="value">left</span>;
+    }
+
+    <span class="constant">#chess-board</span> <span class="type">div</span><span class="pseudo-class">:nth-child</span>(<span class="type">odd</span>) <span class="type">div</span><span class="pseudo-class">:nth-child</span>(<span class="type">odd</span>),
+    <span class="constant">#chess-board</span> <span class="type">div</span><span class="pseudo-class">:nth-child</span>(<span class="type">even</span>) <span class="type">div</span><span class="pseudo-class">:nth-child</span>(<span class="type">even</span>) {
+        <span class="key">background-color</span>: <span class="color">#F0DAB5</span>;
+    }</pre></div>
+</div>
+
+
+<p>Pseudo-clasa <em>&ldquo;:nth-child(N)&rdquo;</em> este introdusă în CSS3, așă ca nu va merge în Internet Explorer 6/7/8.</p>
+
+<h2>Adăugam marcajele</h2>
+
+<p>Tablele de șah au de obicei niște litere și cifre pe margini, hai<br />
+să punem și noi. În div-urile cu id-ul care începe cu &ldquo;A&rdquo; vom adăuga un <span> cu clasa <em>&ldquo;file&rdquo;</em> în care vom scrie numărul liniei. În div-urile de pe linia 1, vom adăuga &lt; span > cu clasa <em>&ldquo;rank&rdquo;</em>, în care scriem litera coloanei.</span></p>
+
+<h3>index.html</h3>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">eighth-rank</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">A8</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;span</span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">file</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>8<span class="tag">&lt;/span&gt;</span><span class="tag">&lt;/div&gt;</span>
+        ..
+    <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">seventh-rank</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">A7</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;span</span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">file</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>7<span class="tag">&lt;/span&gt;</span><span class="tag">&lt;/div&gt;</span>
+        ..
+    <span class="tag">&lt;/div&gt;</span>        
+    ..
+    <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">first-rank</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">A1</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;span</span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">file</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>1<span class="tag">&lt;/span&gt;</span><span class="tag">&lt;span</span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">rank</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>a<span class="tag">&lt;/span&gt;</span><span class="tag">&lt;/div&gt;</span>
+        ..
+        <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">H1</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;span</span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">rank</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>h<span class="tag">&lt;/span&gt;</span><span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/div&gt;</span></pre></div>
+</div>
+
+
+<p>Literele si cifrele pe care le-am adăugat noi sunt urâte și pozitionate prost, ar trebui remediată situația. Literele din căsuțele de culoare închisă ar trebui să fie de culoare deschisă și invers. Având în vedere că elementele de stil se moștenesc în CSS, adăugam <em>&ldquo;color&rdquo;</em> căsuțelor.</p>
+
+<h3>user.css</h3>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="constant">#chess-board</span> <span class="type">div</span> <span class="type">div</span> {
+        <span class="key">display</span>: <span class="value">block</span>;
+        ..
+        <span class="key">color</span>: <span class="color">#F0DAB5</span>;
+    }
+
+    <span class="constant">#chess-board</span> <span class="type">div</span><span class="pseudo-class">:nth-child</span>(<span class="type">odd</span>) <span class="type">div</span><span class="pseudo-class">:nth-child</span>(<span class="type">odd</span>),
+    <span class="constant">#chess-board</span> <span class="type">div</span><span class="pseudo-class">:nth-child</span>(<span class="type">even</span>) <span class="type">div</span><span class="pseudo-class">:nth-child</span>(<span class="type">even</span>) {
+        <span class="key">background-color</span>: <span class="color">#F0DAB5</span>;
+        <span class="key">color</span>: <span class="color">#B58763</span>;
+    }</pre></div>
+</div>
+
+
+<p>Trebuie să lucrăm și la pozitionare. O să trișez un pic și o să folosesc poziționare absolută.</p>
+
+<h3>user.css</h3>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="class">.file</span> {
+        <span class="key">position</span>: <span class="value">absolute</span>;
+    }
+
+    <span class="class">.rank</span> {
+        <span class="key">position</span>: <span class="value">absolute</span>;
+        <span class="key">top</span>: <span class="float">645px</span>;
+        <span class="key">width</span>: <span class="float">75px</span>;
+        <span class="key">text-align</span>: <span class="value">right</span>;
+    }</pre></div>
+</div>
+
+
+<h2>Desenăm piesele</h2>
+
+<p>Tabla noastră de sah este tristă goală, are nevoie de piese. O să folosim entități HTML pentru a reprezenta piesele. Nu este chiar cea mai bună soluție, fiecare browser le reprezintă altfel, dar este o soluție rapidă. Lista cu entitățile se găsesc <a href="http://www.danshort.com/HTMLentities/index.php?w=chess/">aici</a>. Din comoditate, vom adăuga adăuga entitațile în &lt; a >-uri clase pentru culoare <em>&ldquo;black&rdquo;</em>, <em>&ldquo;white&rdquo;</em> și numele piesei,   <em>&ldquo;pawn&rdquo;</em>, <em>&ldquo;knight&rdquo;</em> etc.</p>
+
+<h3>index.html</h3>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">eight-rank</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">A8</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;span</span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">file</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>8<span class="tag">&lt;/span&gt;</span><span class="tag">&lt;a</span> <span class="attribute-name">href</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">#</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">rook black</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span> ♜ <span class="tag">&lt;/a&gt;</span><span class="tag">&lt;/div&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">B8</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;a</span> <span class="attribute-name">href</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">#</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">knight black</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span> ♝<span class="tag">&lt;/a&gt;</span><span class="tag">&lt;/div&gt;</span>
+        ..
+    <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">seventh-rank</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">A7</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;a</span> <span class="attribute-name">href</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">#</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">class</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">pawn black</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span> ♟<span class="tag">&lt;/a&gt;</span><span class="tag">&lt;/div&gt;</span>
+        ..
+    <span class="tag">&lt;/div&gt;</span></pre></div>
+</div>
+
+
+<h2>Mișcăm piesele</h2>
+
+<p>Pentru a mișca piesele cu mouse-ul vom folosi <a href="http://jquery.com/">jQuery</a> și <a href="http://jqueryui.com">jQueryUI</a>. Adăugăm în &lt; head > referințe la librării, folosind CDN-ul Google.</p>
+
+<h3>index.html</h3>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="tag">&lt;head&gt;</span>
+        ..
+        <span class="tag">&lt;script</span> <span class="attribute-name">src</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;/script&gt;</span>
+        <span class="tag">&lt;script</span> <span class="attribute-name">src</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/jquery-ui.min.js</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;/script&gt;</span>
+        ..
+    <span class="tag">&lt;/head&gt;</span></pre></div>
+</div>
+
+
+<p>Adăugăm in &lt; head > o funcție Javascript care se va apela când se încarcă pagina și calculăm dimensiunile tablei.</p>
+
+<h3>index.html</h3>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="tag">&lt;script</span> <span class="attribute-name">type</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">text/javascript</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+<span class="inline">        <span class="predefined">$</span>(document).ready(<span class="keyword">function</span>() {
+            <span class="keyword">var</span> board = <span class="predefined">$</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">#chess-board</span><span class="delimiter">&quot;</span></span>);
+            board = {
+                <span class="key">width</span>: board.width(),
+                <span class="key">height</span>: board.height()
+            };
+    });</span>
+    <span class="tag">&lt;/script&gt;</span></pre></div>
+</div>
+
+
+<p>Marcăm toate piesele <em>draggable</em>, pentru a le putea muta cu mouse-ul. <em>containment</em> stabilește limitele în care se poate muta   piesa și grid stabilește cum va snap-ui piesa.</p>
+
+<h3>index.html</h3>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="predefined">$</span>(document).ready(<span class="keyword">function</span>() {
+            <span class="keyword">var</span> board = <span class="predefined">$</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">#chess-board</span><span class="delimiter">&quot;</span></span>);
+            board = {
+                <span class="key">width</span>: board.width(),
+                <span class="key">height</span>: board.height()
+            };
+            <span class="comment">//drag</span>
+            <span class="predefined">$</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">#chess-board a</span><span class="delimiter">&quot;</span></span>).draggable({
+                <span class="key">containment</span>: [<span class="integer">0</span>, <span class="integer">0</span>, board.width, board.height],
+                <span class="key">grid</span>: [<span class="integer">80</span>,<span class="integer">80</span>],
+                <span class="key">zIndex</span>: <span class="integer">1000</span>
+            });
+        });</pre></div>
+</div>
+
+
+<p>Acum implementăm mutarea efectivă a pieselor. Setăm întâi toate pătrățelele drept <em>droppable</em>, astfel se va ridica un eveniment atunci când o piesă este mutată intr-un alt pătrățel. În funcția <em>drop(event, ui)</em> pe care o primește <em>droppable()</em> vom implementa  mutarea pieselor. Verificăm dacă piesa este cumva mutată în același pătrătel și dacă nu, ștergem piesa care se află în căsuța țintă și mutăm tag-ul care reprezintă piesa.</p>
+
+<h3>index.html</h3>
+
+<div class="CodeRay">
+  <div class="code"><pre><span class="tag">&lt;script</span> <span class="attribute-name">type</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">text/javascript</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+<span class="inline">        <span class="predefined">$</span>(document).ready(<span class="keyword">function</span>() {
+            <span class="keyword">var</span> board = <span class="predefined">$</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">#chess-board</span><span class="delimiter">&quot;</span></span>);
+            board = {
+                <span class="key">width</span>: board.width(),
+                <span class="key">height</span>: board.height()
+            };
+            <span class="predefined">$</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">#chess-board a</span><span class="delimiter">&quot;</span></span>).draggable({
+                <span class="key">containment</span>: [<span class="integer">0</span>, <span class="integer">0</span>, board.width, board.height],
+                <span class="key">grid</span>: [<span class="integer">80</span>,<span class="integer">80</span>],
+                <span class="key">zIndex</span>: <span class="integer">1000</span>
+            });
+
+            <span class="comment">//move pieces</span>
+            <span class="predefined">$</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">#chess-board div &gt;div</span><span class="delimiter">&quot;</span></span>).droppable({
+                <span class="function">drop</span>: <span class="keyword">function</span>(event, ui) {
+                    <span class="keyword">if</span> (<span class="predefined">$</span>(ui.draggable).parent().html() !== (<span class="local-variable">this</span>).html()) {
+                        <span class="keyword">var</span> piece = <span class="predefined">$</span>(ui.draggable);
+                        piece.css(<span class="string"><span class="delimiter">&quot;</span><span class="content">top</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>);
+                        piece.css(<span class="string"><span class="delimiter">&quot;</span><span class="content">left</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span>);
+                        <span class="predefined">$</span>(<span class="local-variable">this</span>).children(<span class="string"><span class="delimiter">&quot;</span><span class="content">a</span><span class="delimiter">&quot;</span></span>).remove();
+                        piece.appendTo(<span class="predefined">$</span>(<span class="local-variable">this</span>));
+                    }
+                }
+            }
+        });</span>
+    <span class="tag">&lt;/script&gt;</span></pre></div>
+</div>
+
+
+<h1>Gata?</h1>
+
+<p>Nu am implementat încă regulile de sah, dar deja poți să joci ca pe o tablă reala. Nu rau pentru început, nu?</p>
