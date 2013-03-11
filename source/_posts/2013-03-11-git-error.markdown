@@ -1,0 +1,15 @@
+---
+layout: post
+title: "Git error"
+date: 2013-03-11 17:51
+comments: true
+categories: tech
+---
+
+
+Pentru că cel mai frumos lucru înainte de un deploy vineri seara, e să vezi "fatal: loose object #{hash}" când scrii minunatul 
+
+        git push prod master
+
+Soluția e simplă, reclonezi repository-ul, copiezi directorul `.git` peste repo-ul vechi și gata. Singurul lucru rău e că pierzi toate commit-urile și iară trebuie să împarți schimbări în commit-uri. 
+ 
