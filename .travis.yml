@@ -6,6 +6,8 @@ rvm:
   - 1.9.3
 before_script:
   - git remote set-url origin $REPO.git
+  - git config --global user.email "github@poloniculmov.com"
+  - git config --global user.name "Polonic"
   - echo -n $id_rsa_{00..30} >> ~/.ssh/id_rsa_base64
   - base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa
   - chmod 600 ~/.ssh/id_rsa
@@ -25,7 +27,7 @@ after_script:
 
 env:
   global:
-    - REPO="git@github.com:polonic/polonic.github.com.git"
+    - REPO="git@github.com:polonic/polonic.github.com"
     - secure: "GXDc2vvtwJLaT6ykbTms0Eujffb5esPsFSyHuse1ft7gf1upEqWZBwGcM6Nk\nSweYrRi4pk/iGPCk7vC3gEU0F2ZYVhYy5aS48MfGaCjfvyKsE5MCOSbs86ou\nPOCz8sY+nBfsYL6hXoItr4d1Ae1RL8U7Yoj8x9UA0YNb5ZP9YTY="
     - secure: "BDqn6e7ILZsisqjBFLqBwvsXySnAuBR+le1n3fq1zCFbRDr3/nfw+kF+olxW\n8/Wf43DX5Is8KoBvwmWvcGyuaqsuD9IoU2ONbECHPlqw3Mb0NNFgsOSi6/yX\nnYt0niLH2PJKmW5WPkIYBNa0SeFC8k+k1/lY5y3eOVM8T3E9RnI="
     - secure: "FsLd52yWbC/LbnJlS+XqQM5rW9COmZB0aatFa1JqMZKvxg3fqBPABnkVUosd\nHYl3C9KPJkZVlRH9qlVGGLRjjnlnwAPerhigL1r6J/btTcF0J6OcSJXL1gfe\nPCm2zppNY1fKC8fPfmA7h9CGlD5ajWgG4wZoPgCKBaAI0krKn3A="
