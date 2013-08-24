@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: administrativ | Thoughts about things]]></title>
+  <link href="http://blog.poloniculmov.com/blog/categories/administrativ/atom.xml" rel="self"/>
+  <link href="http://blog.poloniculmov.com/"/>
+  <updated>2013-08-24T10:11:23+00:00</updated>
+  <id>http://blog.poloniculmov.com/</id>
+  <author>
+    <name><![CDATA[Alex]]></name>
+    <email><![CDATA[blog@poloniculmov.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[În casă nouă]]></title>
+    <link href="http://blog.poloniculmov.com/blog/2013/02/24/in-casa-noua/"/>
+    <updated>2013-02-24T16:30:00+00:00</updated>
+    <id>http://blog.poloniculmov.com/blog/2013/02/24/in-casa-noua</id>
+    <content type="html"><![CDATA[<p>Posterous se închide, mă așteptam la asta de când au fost cumpărați de Twitter. Chiar dacă unul dintre fondatori a lansat un serviciu care nu se v-a închide niciodată, nu prea vreau să dau $5/lună pentru un blog care nu face trafic deloc. Drept urmare, am migrat la Octopress cu Github Pages. În principiu ar trebui să fie același feed.</p>
+
+<p>Încă mai văruiesc pe aici, e posibil să caut o temă nouă. Terminat.</p>
+]]></content>
+  </entry>
+  
+</feed>
